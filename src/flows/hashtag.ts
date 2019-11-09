@@ -60,7 +60,10 @@ export default async (): boolean => {
 	store.setState({
 		tagsToExplore: tagsToExplore.filter(e => e !== randomTag)
 	});
-	increment('basic_hashtag_interaction', successfulInteractions);
+
+	store.change( ({basic_hashtag_interaction}) => ({
+		basic_hashtag_interaction: basic_hashtag_interaction ? basic_hashtag_interaction + successfulInteractions : successfulInteractions
+	}))
 
 	return !checkLimits();
 };

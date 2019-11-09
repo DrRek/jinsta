@@ -1,6 +1,6 @@
 import { store, increment } from '../core/store';
 import logger from '../core/logging';
-import basic_interaction from '../features';
+import { basic_interaction } from '../features';
 
 /**
 	Returns true if i've reached config limits.
@@ -24,7 +24,7 @@ const checkLimits = (): boolean => {
 	Param `interactions`: number of actions to perform
 	Returns true if no config limit has been reached.
 */
-export default async (interactions: number): boolean => {
+export default async (timelineFeed, interactions: number): boolean => {
 	if (checkLimits()) return false;
 	const { config } = store.getState();
 	let successfulInteractions = 0;
@@ -35,7 +35,10 @@ export default async (interactions: number): boolean => {
 		);
 		interactionSuccess && successfulInteractions++;
 	}
-	increment('basic_timeline_interaction', successfulInteractions);
+
+	store.change( ({basic_timeline_interaction}) => ({
+		basic_timeline_interaction: basic_timeline_interaction ? basic_timeline_interaction + successfulInteractions : successfulInteractions
+	}))
 
 	return !checkLimits();
 };

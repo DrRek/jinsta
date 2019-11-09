@@ -2,6 +2,7 @@ import { IgApiClient } from 'instagram-private-api';
 import { Config } from '../core/config';
 import logger from '../core/logging';
 import { sleep, random } from '../core/utils';
+import {store} from '../core/store';
 
 /**
 	This function will attempt to see all the stories of a given user set.
@@ -14,10 +15,10 @@ import { sleep, random } from '../core/utils';
 		For example this is used by storyMassView to avoid viewing multiple time stories.
 */
 async function storyView(
-	client: IgApiClient,
 	userIds: number[],
 	lastSeenPerUser?: any,
 ): Promise<void> {
+	const { client } = store.getState();
 	const NAMESPACE = 'STORY';
 
 	//get all the stories from the users picked above
@@ -71,11 +72,14 @@ async function storyView(
 /**
 	This function will attemp to view all the new (not yet seen) stories showed in the top of the timeline
 */
-async function storyMassView(
-	client: IgApiClient,
-	config: Config
-): Promise<void> {
+async function storyMassView(): Promise<void> {
 	const NAMESPACE = 'STORY MASS VIEW';
+	const { config, client } = store.getState();
+
+	if(!config.story_mass_view_enabled){
+		logger.info(`[${NAMESPACE}] story mass view is disabled`);
+		return;
+	}
 
 	logger.info(`[${NAMESPACE}] starting viewing stories from personal feed`);
 
@@ -102,7 +106,7 @@ async function storyMassView(
 	});
 
 	// view stories
-	await storyView(client, userIds, lastSeenPerUser);
+	await storyView(userIds, lastSeenPerUser);
 }
 
 export { storyView, storyMassView };

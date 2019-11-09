@@ -9,6 +9,7 @@ import { random } from "./src/core/utils";
 import logger from "./src/core/logging";
 import { store, increment } from "./src/core/store";
 import { timeline, hashtag } from "./src/flows";
+import { storyMassView } from "./src/features";
 
 require("dotenv").config();
 
@@ -37,9 +38,9 @@ async function main(): Promise<void> {
 		"Ok, devo assaggiarla! 😍 😋 🍕"
 	];
 
-	config.basic_timeline_interaction_limit = 0;
+	config.basic_timeline_interaction_limit = 1;
 
-	config.basic_hashtag_interaction_limit = 1;
+	config.basic_hashtag_interaction_limit = 0;
 	config.basic_hashtag_interaction_comments_chance = 0;
 	config.tags = [
 		"pizza",
@@ -49,6 +50,8 @@ async function main(): Promise<void> {
 		"pizzamargherita"
 	];
 
+	config.story_mass_view_enabled = false;
+
 	await setup(config);
 
 	const timelineFeed = new TimelineFeed();
@@ -57,7 +60,7 @@ async function main(): Promise<void> {
 	store.setState({ tagsToExplore: config.tags });
 
 	let stillToDo,
-		actions = ["timeline", "hashtag"];
+		actions = ["timeline", "hashtag", "storymassview"];
 	while (actions.length > 0) {
 		//choose a random action
 		const currentAction = actions[random(0, actions.length)];
@@ -67,10 +70,11 @@ async function main(): Promise<void> {
 			case "timeline":
 				logger.info("[MAIN CONTROLLER] Starting timeline feature");
 				stillToDo = await timeline(
+					timelineFeed,
 					random(1, Math.min(10, config.basic_timeline_interaction_limit))
 				);
 
-				if(!stillToDo) actions = actions.filter(e => e !== "timeline");
+				if (!stillToDo) actions = actions.filter(e => e !== "timeline");
 
 				break;
 
@@ -79,8 +83,14 @@ async function main(): Promise<void> {
 				logger.info("[MAIN CONTROLLER] Starting hashtag feature");
 				stillToDo = await hashtag();
 
-				if(!stillToDo) actions = actions.filter(e => e !== "hashtag");
+				if (!stillToDo) actions = actions.filter(e => e !== "hashtag");
 
+				break;
+
+			case "storymassview":
+				logger.info("[MAIN CONTROLLER] Starting story massview");
+				await storyMassView();
+				actions = actions.filter(e => e !== "storymassview");
 				break;
 
 			default:
