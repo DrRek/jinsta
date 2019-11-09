@@ -7,7 +7,7 @@ import logger from '../core/logging';
 import { addServerCalls, store } from '../core/store';
 
 export const defaultMediaValidator = (media: any): boolean => {
-	const config = store.getState().config
+	const config = store.getState().config;
 	
 	if (media.ad_id || media.link) {
 		logger.info('[FILTER] media was an ad with id: %s / link: %s', media.ad_id, media.link);

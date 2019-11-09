@@ -35,10 +35,9 @@ const basic_timeline_interaction = async (feed) => {
 		return;
 	}
 
-	increment('basic_timeline_interaction_comments_chance')
-	logger.info('test %o', store.getState())
+	increment('basic_timeline_interaction_limit');
 
-	logger.info('[BASIC_TIMELINE_INTERACTION] interacted with %s', convertIDtoPost(media.id))
+	logger.info('[BASIC_TIMELINE_INTERACTION] interacted with %s', convertIDtoPost(media.id));
 };
 
 

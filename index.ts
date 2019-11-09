@@ -1,25 +1,19 @@
-import {
-	setup,
-	Config,
-	TimelineFeed,
-	basic_timeline_interaction,
-} from './src';
+import { setup, Config, TimelineFeed, basic_timeline_interaction } from "./src";
 
-require('dotenv').config();
+require("dotenv").config();
 
 async function main(): Promise<void> {
-	const workspace = './workspace';
+	const workspace = "./workspace";
 
 	const { IG_USERNAME, IG_PASSWORD } = process.env;
-	const config = new Config(
-		IG_USERNAME,
-		IG_PASSWORD,
-		workspace,
-	);
+	const config = new Config(IG_USERNAME, IG_PASSWORD, workspace);
 
-	const massview = false;
-	//config.tags = ['vegan', 'world'];
-	//config.likeLimit = 10;
+	config.comments = [
+		"Bella pic :bowtie:",
+		":fire: :fire: :fire:",
+		"Grande ! :sunglasses:",
+		"Top :raised_hands: :raised_hands:"
+	];
 
 	const client = await setup(config);
 
