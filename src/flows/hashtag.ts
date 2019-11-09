@@ -1,8 +1,8 @@
-import { store, increment } from "../core/store";
-import logger from "../core/logging";
-import { basic_interaction } from "../features";
-import { random } from "../core/utils";
-import { HashtagFeed } from "../feeds";
+import { store, increment } from '../core/store';
+import logger from '../core/logging';
+import { basic_interaction } from '../features';
+import { random } from '../core/utils';
+import { HashtagFeed } from '../feeds';
 
 /**
 	Returns true if i've reached config limits.
@@ -22,7 +22,7 @@ const checkLimits = (): boolean => {
 			return false;
 		}
 	}
-	logger.info("[HASHTAG FLOW] I've reached config limits");
+	logger.info('[HASHTAG FLOW] I\'ve reached config limits');
 	return true;
 };
 
@@ -42,7 +42,7 @@ export default async (): boolean => {
 	);
 
 	logger.info(
-		"[HASHTAG FLOW] tag: %s, interactions: %i",
+		'[HASHTAG FLOW] tag: %s, interactions: %i',
 		randomTag,
 		interactions
 	);
@@ -60,7 +60,7 @@ export default async (): boolean => {
 	store.setState({
 		tagsToExplore: tagsToExplore.filter(e => e !== randomTag)
 	});
-	increment("basic_hashtag_interaction", successfulInteractions);
+	increment('basic_hashtag_interaction', successfulInteractions);
 
 	return !checkLimits();
 };

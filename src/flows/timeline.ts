@@ -1,6 +1,6 @@
-import { store, increment } from "../core/store";
-import logger from "../core/logging";
-import basic_interaction from "../features";
+import { store, increment } from '../core/store';
+import logger from '../core/logging';
+import basic_interaction from '../features';
 
 /**
 	Returns true if i've reached config limits.
@@ -15,7 +15,7 @@ const checkLimits = (): boolean => {
 		)
 			return false;
 	}
-	logger.info("[TIMELINE FLOW] I've reached config limits");
+	logger.info('[TIMELINE FLOW] I\'ve reached config limits');
 	return true;
 };
 
@@ -35,7 +35,7 @@ export default async (interactions: number): boolean => {
 		);
 		interactionSuccess && successfulInteractions++;
 	}
-	increment("basic_timeline_interaction", successfulInteractions);
+	increment('basic_timeline_interaction', successfulInteractions);
 
 	return !checkLimits();
 };
