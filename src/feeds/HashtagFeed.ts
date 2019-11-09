@@ -1,4 +1,4 @@
-import { store } from '../core/store';
+import store from '../core/store';
 import MediaFeed from './MediaFeed';
 
 export default class HashtagFeed extends MediaFeed {

@@ -1,4 +1,4 @@
-import { store, increment } from '../core/store';
+import store from '../core/store';
 import logger from '../core/logging';
 import { basic_interaction } from '../features';
 
@@ -38,7 +38,7 @@ export default async (timelineFeed, interactions: number): boolean => {
 
 	store.change( ({basic_timeline_interaction}) => ({
 		basic_timeline_interaction: basic_timeline_interaction ? basic_timeline_interaction + successfulInteractions : successfulInteractions
-	}))
+	}));
 
 	return !checkLimits();
 };

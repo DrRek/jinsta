@@ -1,8 +1,6 @@
-import { IgApiClient } from 'instagram-private-api';
-import { Config } from '../core/config';
 import logger from '../core/logging';
 import { sleep, random } from '../core/utils';
-import {store} from '../core/store';
+import store from '../core/store';
 
 /**
 	This function will attempt to see all the stories of a given user set.

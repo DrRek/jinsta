@@ -1,7 +1,7 @@
 import { Config } from '../core/config';
 import { chance } from '../core/utils';
 import logger from '../core/logging';
-import { store } from '../core/store';
+import store from '../core/store';
 
 export const defaultMediaValidator = (media: any): boolean => {
 	const config = store.getState().config;

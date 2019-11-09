@@ -1,6 +1,6 @@
-import createStore from "unistore";
-import { IgApiClient } from "instagram-private-api";
-import { Config } from "./config";
+import createStore from 'unistore';
+import { IgApiClient } from 'instagram-private-api';
+import { Config } from './config';
 
 interface State {
 	serverCalls: number; // TODO add a limit for this
@@ -18,5 +18,7 @@ const initState: Partial<State> = {
 };
 
 store.setState(initState);
+
+export default store;
 
 export { store, State };

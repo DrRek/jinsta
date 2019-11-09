@@ -1,4 +1,4 @@
-import { store, increment } from '../core/store';
+import store from '../core/store';
 import logger from '../core/logging';
 import { basic_interaction } from '../features';
 import { random } from '../core/utils';
@@ -63,7 +63,7 @@ export default async (): boolean => {
 
 	store.change( ({basic_hashtag_interaction}) => ({
 		basic_hashtag_interaction: basic_hashtag_interaction ? basic_hashtag_interaction + successfulInteractions : successfulInteractions
-	}))
+	}));
 
 	return !checkLimits();
 };

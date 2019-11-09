@@ -1,4 +1,4 @@
-import { store } from '../core/store';
+import store from '../core/store';
 import { defaultMediaValidator } from './utils';
 import { like, comment } from '../actions';
 import {
