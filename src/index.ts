@@ -1,7 +1,7 @@
 import setup from './main';
 import { Config } from './core/config';
-import { TimelineFeed } from './feeds';
-import { basic_timeline_interaction } from './features';
+import { TimelineFeed, HashtagFeed } from './feeds';
+import { basic_interaction } from './features';
 
 /*import {
 	timeline,
@@ -16,8 +16,9 @@ export {
 	Config,
 
 	TimelineFeed,
+	HashtagFeed,
 
-	basic_timeline_interaction,
+	basic_interaction,
 	/*timeline,
 	hashtag,
 	storyMassView,*/
