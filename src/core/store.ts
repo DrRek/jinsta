@@ -56,7 +56,7 @@ const addServerCalls = (amount = 1): void => store.change(({ serverCalls }) => (
 const increment = (property: string, amount = 1): void => {
 	const current = store.getState()[property];
 	store.setState({
-		[property]: current ? current + 1 : 1
+		[property]: current ? current + amount : amount
 	});
 };
 

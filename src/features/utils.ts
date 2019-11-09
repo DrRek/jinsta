@@ -1,16 +1,17 @@
-import { IgApiClient } from 'instagram-private-api';
-import { Feed } from 'instagram-private-api/dist/core/feed';
 import { Config } from '../core/config';
-import { media$ } from '../streams/media';
-import { sleep, chance } from '../core/utils';
+import { chance } from '../core/utils';
 import logger from '../core/logging';
-import { addServerCalls, store } from '../core/store';
+import { store } from '../core/store';
 
 export const defaultMediaValidator = (media: any): boolean => {
 	const config = store.getState().config;
-	
+
 	if (media.ad_id || media.link) {
-		logger.info('[FILTER] media was an ad with id: %s / link: %s', media.ad_id, media.link);
+		logger.info(
+			'[FILTER] media was an ad with id: %s / link: %s',
+			media.ad_id,
+			media.link
+		);
 		return false;
 	}
 	if (media.has_liked) {
@@ -24,8 +25,12 @@ export const defaultMediaValidator = (media: any): boolean => {
 
 	const { text } = media.caption;
 	let badWord;
-	if((badWord = config.findBlacklistedWord(text))){
-		logger.warn('[FILTER] media %s matched blacklist word %s', media.id, badWord);
+	if ((badWord = config.findBlacklistedWord(text))) {
+		logger.warn(
+			'[FILTER] media %s matched blacklist word %s',
+			media.id,
+			badWord
+		);
 		return false;
 	}
 

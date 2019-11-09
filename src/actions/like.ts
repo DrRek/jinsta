@@ -1,8 +1,6 @@
 import { chance, convertIDtoPost } from '../core/utils';
 import { store } from '../core/store';
-import { filter, flatMap, share, tap } from 'rxjs/operators';
 import logger from '../core/logging';
-import { media$ } from './media';
 
 export default async (media: any): boolean => {
 	const client = store.getState().client;
