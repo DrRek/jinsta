@@ -52,7 +52,8 @@ class Config {
 	];
 
 	//basic_timeline_interaction
-	public basic_timeline_interaction_comments_chance = 0.5;
+	public basic_timeline_interaction_limit = 10;
+	public basic_timeline_interaction_comments_chance = 0;
 
 	constructor(
 		username: string,

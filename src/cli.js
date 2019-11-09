@@ -92,8 +92,7 @@ config.proxy = args.proxy;
 config.tags = args.tags;
 if (args.likeLimit) config.likeLimit = args.likeLimit;
 
-setup(config).then(async client =>  {
-
+setup(config).then(client =>  {
 	const timelineFeed = new TimelineFeed();
 
 	await basic_timeline_interactions(timelineFeed);

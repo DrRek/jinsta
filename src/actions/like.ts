@@ -40,4 +40,4 @@ export default async (media: any): boolean => {
 	}
 
 	return true;
-}
+};

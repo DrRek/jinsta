@@ -1,7 +1,7 @@
 import setup from './main';
 import { Config } from './core/config';
 import { TimelineFeed } from './feeds';
-import { basic_timeline_interaction } from './actions';
+import { basic_timeline_interaction } from './features';
 
 /*import {
 	timeline,

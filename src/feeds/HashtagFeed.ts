@@ -3,12 +3,12 @@ import { Config } from '../core/config';
 import { mediaFeed, likesForTags } from './utils';
 import { store } from '../core/store';
 import logger from '../core/logging';
-import MediaFeed from './MediaFeed'
+import MediaFeed from './MediaFeed';
 
 export default class HashtagFeed extends MediaFeed {
 	constructor(hashtag: string){
 		const client = store.getState().client;
-		client.feed.tags(hastag, 'recent')
+		client.feed.tags(hastag, 'recent');
 	}
 }
 

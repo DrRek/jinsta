@@ -1,23 +1,23 @@
-import { logger } from '../core/logging'
+import logger from '../core/logging';
 
 export default class MediaFeed {
 	private feed: any;
 	private items: any[];
 
 	constructor(feed){
-		logger.info('asd')
-		if (new.target === MeidaFeed) {
-	      throw new TypeError("Cannot construct MediaFeed instances directly, it's an abstract class.");
+		logger.info('MediaFeed');
+		if (new.target === MediaFeed) {
+	      throw new TypeError('Cannot construct MediaFeed instances directly, it\'s an abstract class.');
 	    }
 		this.feed = feed;
 		this.items = [];
 	}
 
-	nextMedia = async () => {
-		if(!items)
-			this.items = await feed.items();
+	public nextMedia = async () => {
+		if(this.items.length === 0)
+			this.items = await this.feed.items();
 
-		return items.shift()
+		return this.items.shift();
 	}
 }
 

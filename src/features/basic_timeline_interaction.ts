@@ -1,11 +1,11 @@
-import { store } from '../core/store';
-import { defaultMediaValidator } from './utils'
-import { like, comment } from '../actions'
-import { evaluateProbabilityInstance } from '../core/utils'
-import { logger } from '../core/logger'
+import { store, increment } from '../core/store';
+import { defaultMediaValidator } from './utils';
+import { like, comment } from '../actions';
+import { boolFromProbability, convertIDtoPost } from '../core/utils';
+import logger from '../core/logging';
 
 const isValidMedia = (media) =>
-	defaultMediaValidator(media)
+	defaultMediaValidator(media);
 
 /**
 feed: the object of the feed to take the next media from
@@ -13,27 +13,33 @@ feed: the object of the feed to take the next media from
 const basic_timeline_interaction = async (feed) => {
 	const config = store.getState().config;
 
+	let media;
 	do {
-		const media = feed.getNextMedia();
-	} while (!isValidMedia(media))
+		media = await feed.nextMedia();
+	} while (!isValidMedia(media));
 
-	const likeSuccess = await like(media)
+	const likeSuccess = await like(media);
 	if(!likeSuccess){
 		logger.error(
-			'[BASIC_TIMELINE_INTERACTION] error while liking media')
-		return
+			'[BASIC_TIMELINE_INTERACTION] error while liking media');
+		return;
 	}
-	const shouldComment = likeSuccess && config.comments && evaluateProbabilityInstance(config.basic_timeline_interaction_comments_chance)
+	const shouldComment = likeSuccess && config.comments && boolFromProbability(config.basic_timeline_interaction_comments_chance);
 
 	if(shouldComment){
-		const commentSuccess = await comment(media)
+		const commentSuccess = await comment(media);
 		if(!commentSuccess){
-		logger.error(
-			'[BASIC_TIMELINE_INTERACTION] error while commenting media') 
+			logger.error(
+				'[BASIC_TIMELINE_INTERACTION] error while commenting media'); 
 		}
-		return
+		return;
 	}
-}
+
+	increment('basic_timeline_interaction_comments_chance')
+	logger.info('test %o', store.getState())
+
+	logger.info('[BASIC_TIMELINE_INTERACTION] interacted with %s', convertIDtoPost(media.id))
+};
 
 
-export default basic_timeline_interaction
+export default basic_timeline_interaction;

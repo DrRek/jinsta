@@ -4,7 +4,7 @@ import { filter, flatMap, share, tap } from 'rxjs/operators';
 import logger from '../core/logging';
 import { media$ } from './media';
 
-export default async (media: any) :boolean => {
+export default async (media: any): boolean => {
 	const client = store.getState().client;
 	const config = store.getState().config;
 
@@ -34,4 +34,4 @@ export default async (media: any) :boolean => {
 	}
 
 	return true;
-}
+};

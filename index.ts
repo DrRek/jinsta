@@ -1,9 +1,8 @@
 import {
 	setup,
 	Config,
-	hashtag,
-	timeline,
-	storyMassView,
+	TimelineFeed,
+	basic_timeline_interaction,
 } from './src';
 
 require('dotenv').config();
@@ -24,7 +23,12 @@ async function main(): Promise<void> {
 
 	const client = await setup(config);
 
-	if (massview) {
+	const timelineFeed = new TimelineFeed();
+
+	await basic_timeline_interaction(timelineFeed);
+	await basic_timeline_interaction(timelineFeed);
+
+	/*if (massview) {
 		await storyMassView(client, config);
 	}
 
@@ -34,7 +38,7 @@ async function main(): Promise<void> {
 	} else {
 		// run timeline feed
 		await timeline(client, config);
-	}
+	}*/
 }
 
 main();

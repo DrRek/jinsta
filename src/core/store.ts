@@ -53,10 +53,17 @@ store.setState(initState);
 
 // useful functions
 const addServerCalls = (amount = 1): void => store.change(({ serverCalls }) => ({ serverCalls: serverCalls + amount }));
+const increment = (property): void => {
+	const current = store.getState()[property]
+	store.setState({
+		[property]: current ? current + 1 : 1
+	})
+}
 
 export {
 	store,
 	State,
 	UniStoreObservable,
 	addServerCalls,
+	increment
 };
