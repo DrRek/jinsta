@@ -3,8 +3,8 @@ import login from './session';
 import { addLogRotate } from './core/logging';
 import { IgApiClient } from 'instagram-private-api';
 import fs from 'fs';
-import { like$ } from './streams/like';
 import { store } from './core/store';
+import logger from './core/logging';
 
 function setupClient(config: Config): IgApiClient {
 	// must be the first thing in the application start
@@ -28,10 +28,6 @@ async function setup(config: Config): Promise<IgApiClient> {
 
 	// push to store
 	store.setState({ config, client });
-
-	// trigger the like pipeline
-	// TODO make it hot per default
-	like$.subscribe();
 
 	return client;
 }

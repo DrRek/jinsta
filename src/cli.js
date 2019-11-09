@@ -73,9 +73,11 @@ var jinsta = require('jinsta');
 
 var setup = jinsta.setup;
 var Config = jinsta.Config;
-var timeline = jinsta.timeline;
-var hashtag = jinsta.hashtag;
-var storyMassView = jinsta.storyMassView;
+var TimelineFeed = jinsta.TimelineFeed;
+var basic_timeline_interactions = jinsta.basic_timeline_interactions;
+//var timeline = jinsta.timeline;
+//var hashtag = jinsta.hashtag;
+//var storyMassView = jinsta.storyMassView;
 
 var config = new Config(
 	args.username,
@@ -90,7 +92,12 @@ config.proxy = args.proxy;
 config.tags = args.tags;
 if (args.likeLimit) config.likeLimit = args.likeLimit;
 
-setup(config).then(function(client) {
+setup(config).then(async client =>  {
+
+	const timelineFeed = new TimelineFeed();
+
+	await basic_timeline_interactions(timelineFeed);
+	/*
 	if (args.storrymassview) {
 		storyMassView(client, config);
 	}
@@ -101,5 +108,5 @@ setup(config).then(function(client) {
 	} else {
 		// run timeline feed
 		timeline(client, config);
-	}
+	}*/
 });

@@ -1,10 +1,5 @@
-import timeline from './timeline';
-import hashtag from './hashtag';
-import { storyView, storyMassView } from './story';
+import basic_timeline_interaction from './basic_timeline_interaction'
 
 export {
-	timeline,
-	hashtag,
-	storyView,
-	storyMassView,
+	basic_timeline_interaction
 };

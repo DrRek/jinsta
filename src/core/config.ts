@@ -51,6 +51,9 @@ class Config {
 		'rightwing', 'conservative', 'death', 'racist', 'cbd',
 	];
 
+	//basic_timeline_interaction
+	public basic_timeline_interaction_comments_chance = 0.5;
+
 	constructor(
 		username: string,
 		password: string,
@@ -64,7 +67,7 @@ class Config {
 
 	public chooseComment = (): string => {
 		if(!this.comments)
-			throw 'You likely forgot to set comments in your config';
+			throw '[CONFIG] You likely forgot to set comments in your config!';
 		return this.comments[Math.floor(Math.random()*this.comments.length)];
 	}
 

@@ -3,7 +3,16 @@ import { Config } from '../core/config';
 import { mediaFeed, likesForTags } from './utils';
 import { store } from '../core/store';
 import logger from '../core/logging';
+import MediaFeed from './MediaFeed'
 
+export default class HashtagFeed extends MediaFeed {
+	constructor(hashtag: string){
+		const client = store.getState().client;
+		client.feed.tags(hastag, 'recent')
+	}
+}
+
+/*
 async function hashtag(client: IgApiClient, config: Config): Promise<void> {
 	if (config.likeLimit <= 0) {
 		logger.error('like limit has to be set for like by hashtag!');
@@ -58,3 +67,4 @@ async function hashtag(client: IgApiClient, config: Config): Promise<void> {
 }
 
 export default hashtag;
+*/

@@ -1,10 +1,13 @@
 import setup from './main';
 import { Config } from './core/config';
-import {
+import { TimelineFeed } from './feeds';
+import { basic_timeline_interaction } from './actions';
+
+/*import {
 	timeline,
 	hashtag,
 	storyMassView,
-} from './features';
+} from './features';*/
 
 export default setup;
 
@@ -12,7 +15,10 @@ export {
 	setup,
 	Config,
 
-	timeline,
+	TimelineFeed,
+
+	basic_timeline_interaction,
+	/*timeline,
 	hashtag,
-	storyMassView,
+	storyMassView,*/
 };

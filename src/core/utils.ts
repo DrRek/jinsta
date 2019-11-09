@@ -21,6 +21,10 @@ function convertIDtoPost(mediaID: string): string {
 const random = (lowerBound: number, upperBound: number): number =>
 	lowerBound + Math.floor(Math.random()*(upperBound - lowerBound));
 
+// returns true with a certain probability provided as input
+const evaluateProbabilityInstance = (probability: number): number =>
+	Math.random() < probability;
+
 
 export {
 	sleep,
