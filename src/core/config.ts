@@ -51,12 +51,14 @@ class Config {
 		'rightwing', 'conservative', 'death', 'racist', 'cbd',
 	];
 
-	//basic_interaction
+	//basicMediaInteraction
 	public basic_timeline_interaction_limit = 10;
 	public basic_timeline_interaction_comments_chance = 0;
 
 	public basic_hashtag_interaction_limit = 10;
 	public basic_hashtag_interaction_comments_chance = 0.8;
+
+	public follow_by_hashtag = 0;
 
 	constructor(
 		username: string,

@@ -1,6 +1,6 @@
 import store from '../core/store';
 import logger from '../core/logging';
-import { basic_interaction } from '../features';
+import { basicMediaInteraction } from '../features';
 
 /**
 	Returns true if i've reached config limits.
@@ -29,7 +29,7 @@ export default async (timelineFeed, interactions: number): boolean => {
 	const { config } = store.getState();
 	let successfulInteractions = 0;
 	for (let i = 0; i < interactions; i++) {
-		const interactionSuccess = await basic_interaction(
+		const interactionSuccess = await basicMediaInteraction(
 			timelineFeed,
 			config.basic_timeline_interaction_comments_chance
 		);

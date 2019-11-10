@@ -10,6 +10,7 @@ import logger from "./src/core/logging";
 import store from "./src/core/store";
 import { timeline, hashtag } from "./src/flows";
 import { storyMassView } from "./src/features";
+import { follow, unfollow } from './src/actions'
 
 require("dotenv").config();
 
@@ -38,9 +39,9 @@ async function main(): Promise<void> {
 		"Ok, devo assaggiarla! 😍 😋 🍕"
 	];
 
-	config.basic_timeline_interaction_limit = 1;
+	config.basic_timeline_interaction_limit = 0;
 
-	config.basic_hashtag_interaction_limit = 1;
+	config.basic_hashtag_interaction_limit = 3;
 	config.basic_hashtag_interaction_comments_chance = 0;
 	config.tags = [
 		"pizza",
@@ -50,7 +51,9 @@ async function main(): Promise<void> {
 		"pizzamargherita"
 	];
 
-	config.story_mass_view_enabled = true;
+	config.story_mass_view_enabled = false;
+
+	config.follow_by_hashtag = 3;
 
 	await setup(config);
 

@@ -14,8 +14,8 @@ const isValidMedia = (media: any): boolean => defaultMediaValidator(media);
 /**
 feed: the object of the feed to take the next media from
 */
-const basic_interaction = async (feed, commentProbability = 0): boolean => {
-	const config = store.getState().config;
+const basicMediaInteraction = async (feed, commentProbability = 0): boolean => {
+	const { config } = store.getState();
 
 	let media;
 	do {
@@ -48,4 +48,4 @@ const basic_interaction = async (feed, commentProbability = 0): boolean => {
 	return true;
 };
 
-export default basic_interaction;
+export default basicMediaInteraction;

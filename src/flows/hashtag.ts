@@ -1,28 +1,24 @@
-import store from '../core/store';
-import logger from '../core/logging';
-import { basic_interaction } from '../features';
-import { random } from '../core/utils';
-import { HashtagFeed } from '../feeds';
+import store from "../core/store";
+import logger from "../core/logging";
+import { basicMediaInteraction } from "../features";
+import { random } from "../core/utils";
+import { HashtagFeed } from "../feeds";
 
 /**
 	Returns true if i've reached config limits.
 */
 const checkLimits = (): boolean => {
-	const { config, basic_hashtag_interaction, tagsToExplore } = store.getState();
+	const { config, tagsToExplore } = store.getState();
 
-	if (config.tags.length > 0 && config.basic_hashtag_interaction_limit > 0) {
+	if (config.tags.length > 0) {
 		if (tagsToExplore === undefined) {
 			store.setState({ tagsToExplore: config.tags });
 			return false;
-		} else if (
-			tagsToExplore.length > 0 &&
-			(!basic_hashtag_interaction ||
-				basic_hashtag_interaction < config.basic_hashtag_interaction_limit)
-		) {
+		} else if (tagsToExplore.length > 0) {
 			return false;
 		}
 	}
-	logger.info('[HASHTAG FLOW] I\'ve reached config limits');
+	logger.info("[HASHTAG FLOW] I've reached config limits");
 	return true;
 };
 
@@ -35,35 +31,56 @@ export default async (): boolean => {
 	if (checkLimits()) return false;
 	const { config, tagsToExplore } = store.getState();
 	const randomTag = tagsToExplore[random(0, tagsToExplore.length)];
+	const hashtagFeed = new HashtagFeed(randomTag);
 
-	const interactions = random(
+	const basic = {
+		tot: 0,
+		current: 0,
+		successful: 0,
+		run: async () => {
+			logger.info('\'ve chose to like')
+			return true;
+		}/*await basicMediaInteraction(
+			hashtagFeed,
+			config.basic_hashtag_interaction_comments_chance
+		);*/
+	}
+
+	const follow = {
+		tot: 0,
+		current: 0,
+		successful: null,
+		run: async () => {
+			logger.info('i\'ve chosed to follow')
+			return true;
+		}
+	}
+
+
+	basic.tot = random(
 		1,
 		Math.ceil(config.basic_hashtag_interaction_limit / tagsToExplore.length)
 	);
 
-	logger.info(
-		'[HASHTAG FLOW] tag: %s, interactions: %i',
-		randomTag,
-		interactions
+	follow.tot = random(
+		1,
+		Math.ceil(config.follow_by_hashtag / tagsToExplore.length)
 	);
-	const hashtagFeed = new HashtagFeed(randomTag);
 
-	let successfulInteractions = 0;
-	for (let i = 0; i < interactions; i++) {
-		const interactionSuccess = await basic_interaction(
-			hashtagFeed,
-			config.basic_hashtag_interaction_comments_chance
-		);
-		interactionSuccess && successfulInteractions++;
+	const tot = basic.tot + follow.tot
+	const actions = [basic, follow]
+	for(let i = 0; i<tot; i++){
+		const availableActions = actions.filter(({tot, current}) => current<tot);
+		const randomAction = availableActions[random(0, availableActions.length)];
+		const success = await randomAction.run();
+		randomAction.current++;
+		success && randomAction.successful++
+		logger.info('%o %o %o %o', basic, follow, actions, randomAction)
 	}
 
 	store.setState({
 		tagsToExplore: tagsToExplore.filter(e => e !== randomTag)
 	});
-
-	store.change( ({basic_hashtag_interaction}) => ({
-		basic_hashtag_interaction: basic_hashtag_interaction ? basic_hashtag_interaction + successfulInteractions : successfulInteractions
-	}));
 
 	return !checkLimits();
 };

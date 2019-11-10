@@ -1,7 +1,9 @@
-import basic_interaction from './basic_interaction';
+import basicMediaInteraction from './basicMediaInteraction';
+import hashtagMediaInteraction from './basicMediaInteraction';
 import { storyMassView } from './story';
 
 export {
-	basic_interaction,
+	basicMediaInteraction,
+	hashtagMediaInteraction,
 	storyMassView
 };
