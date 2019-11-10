@@ -1,8 +1,8 @@
-import store from "../core/store";
-import logger from "../core/logging";
-import { basicMediaInteraction } from "../features";
-import { random } from "../core/utils";
-import { HashtagFeed } from "../feeds";
+import store from '../core/store';
+import logger from '../core/logging';
+import { basicMediaInteraction } from '../features';
+import { random } from '../core/utils';
+import { HashtagFeed } from '../feeds';
 
 /**
 	Returns true if i've reached config limits.
@@ -18,7 +18,7 @@ const checkLimits = (): boolean => {
 			return false;
 		}
 	}
-	logger.info("[HASHTAG FLOW] I've reached config limits");
+	logger.info('[HASHTAG FLOW] I\'ve reached config limits');
 	return true;
 };
 
@@ -38,23 +38,23 @@ export default async (): boolean => {
 		current: 0,
 		successful: 0,
 		run: async () => {
-			logger.info('\'ve chose to like')
+			logger.info('\'ve chose to like');
 			return true;
 		}/*await basicMediaInteraction(
 			hashtagFeed,
 			config.basic_hashtag_interaction_comments_chance
 		);*/
-	}
+	};
 
 	const follow = {
 		tot: 0,
 		current: 0,
 		successful: null,
 		run: async () => {
-			logger.info('i\'ve chosed to follow')
+			logger.info('i\'ve chosed to follow');
 			return true;
 		}
-	}
+	};
 
 
 	basic.tot = random(
@@ -67,15 +67,15 @@ export default async (): boolean => {
 		Math.ceil(config.follow_by_hashtag / tagsToExplore.length)
 	);
 
-	const tot = basic.tot + follow.tot
-	const actions = [basic, follow]
+	const tot = basic.tot + follow.tot;
+	const actions = [basic, follow];
 	for(let i = 0; i<tot; i++){
 		const availableActions = actions.filter(({tot, current}) => current<tot);
 		const randomAction = availableActions[random(0, availableActions.length)];
 		const success = await randomAction.run();
 		randomAction.current++;
-		success && randomAction.successful++
-		logger.info('%o %o %o %o', basic, follow, actions, randomAction)
+		success && randomAction.successful++;
+		logger.info('%o %o %o %o', basic, follow, actions, randomAction);
 	}
 
 	store.setState({
