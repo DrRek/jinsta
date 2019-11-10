@@ -8,7 +8,7 @@ const { MONGODB_URL, MONGODB_DATABASE } = process.env;
 const NAMESPACE = 'DATABASE';
 const COLLECTION_FOLLOWER = 'follow';
 
-const connect = callback => {
+const connect = (callback): void => {
 	MongoClient.connect(
 		MONGODB_URL,
 		{ useNewUrlParser: true, useUnifiedTopology: true },
@@ -22,7 +22,7 @@ const connect = callback => {
 	);
 };
 
-const saveManyFollow = follow => {
+const saveManyFollow = (follow): void => {
 	connect(client => {
 		const database = client.db(MONGODB_DATABASE);
 		const collection = database.collection(COLLECTION_FOLLOWER);
@@ -32,7 +32,7 @@ const saveManyFollow = follow => {
 			...item
 		}));
 
-		collection.insertMany(follow, (error, result) => {
+		collection.insertMany(follow, (error) => {
 			if (error) {
 				logger.error(`[${NAMESPACE} error while inserting - %o]`, error);
 				throw error;
@@ -43,7 +43,7 @@ const saveManyFollow = follow => {
 	});
 };
 
-const deleteManyFollow = unfollow => {
+const deleteManyFollow = (unfollow): void => {
 	connect(client => {
 		const database = client.db(MONGODB_DATABASE);
 		const collection = database.collection(COLLECTION_FOLLOWER);
@@ -54,7 +54,7 @@ const deleteManyFollow = unfollow => {
 			}
 		};
 
-		collection.deleteMany(idsToRemove, (error, result) => {
+		collection.deleteMany(idsToRemove, (error) => {
 			if (error) {
 				logger.error(`[${NAMESPACE} error while deleting - %o]`, error);
 				client.close();

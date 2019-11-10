@@ -12,7 +12,7 @@ export default async (): boolean => {
 		return false;
 	}
 
-	logger.info('%o',config.user)
+	logger.info('%o',config.user);
 
 	saveManyFollow([{
 		from: config.user.pk,
