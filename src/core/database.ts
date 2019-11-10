@@ -1,12 +1,12 @@
-import logger from "./logging";
+import logger from './logging';
 
-const MongoClient = require("mongodb").MongoClient;
+const MongoClient = require('mongodb').MongoClient;
 
-require("dotenv").config();
+require('dotenv').config();
 
 const { MONGODB_URL, MONGODB_DATABASE } = process.env;
-const NAMESPACE = "DATABASE";
-const COLLECTION_FOLLOWER = "follow";
+const NAMESPACE = 'DATABASE';
+const COLLECTION_FOLLOWER = 'follow';
 
 const connect = callback => {
 	MongoClient.connect(
