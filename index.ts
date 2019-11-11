@@ -2,8 +2,7 @@ import {
 	setup,
 	Config,
 	TimelineFeed,
-	HashtagFeed,
-	basic_interaction
+	HashtagFeed
 } from "./src";
 import { random } from "./src/core/utils";
 import logger from "./src/core/logging";
@@ -41,7 +40,7 @@ async function main(): Promise<void> {
 
 	config.basic_timeline_interaction_limit = 0;
 
-	config.basic_hashtag_interaction_limit = 3;
+	config.basic_hashtag_interaction_limit = 0;
 	config.basic_hashtag_interaction_comments_chance = 0;
 	config.tags = [
 		"pizza",
@@ -53,7 +52,7 @@ async function main(): Promise<void> {
 
 	config.story_mass_view_enabled = false;
 
-	config.follow_by_hashtag = 3;
+	config.follow_by_hashtag = 1;
 
 	await setup(config);
 

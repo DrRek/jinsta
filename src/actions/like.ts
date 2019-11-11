@@ -7,7 +7,7 @@ export default async (media: any): boolean => {
 	const config = store.getState().config;
 	const { user } = config;
 
-	let response: any = null;
+	let response: any = {};
 
 	try {
 		response = await client.media.like({

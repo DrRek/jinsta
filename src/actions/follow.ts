@@ -2,20 +2,19 @@ import store from '../core/store';
 import logger from '../core/logging';
 import { saveManyFollow } from '../core/database';
 
-export default async (): boolean => {
+export default async (pk: number): boolean => {
 	const NAMESPACE = 'FOLLOW';
 	const { config, client } = store.getState();
-	const userId = (await client.user.searchExact('cpmax8')).pk;
-	const { following } = await client.friendship.create(userId);
+	const { following } = await client.friendship.create(pk);
 	
 	if(!following){
-		logger.warn(`[${NAMESPACE} unable to follow user %o]`, userId);
+		logger.warn(`[${NAMESPACE} unable to follow user %o]`, pk);
 		return false;
 	}
 
 	saveManyFollow([{
 		from: config.user.pk,
-		to: userId,
+		to: pk,
 		timestamp: new Date()
 	}]);
 

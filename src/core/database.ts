@@ -1,4 +1,5 @@
 import logger from './logging';
+import store from './store'
 
 const MongoClient = require('mongodb').MongoClient;
 
@@ -24,12 +25,16 @@ const connect = (callback): void => {
 
 const saveManyFollow = (follow): void => {
 	connect(client => {
+		const { config } = store.getState();
 		const database = client.db(MONGODB_DATABASE);
 		const collection = database.collection(COLLECTION_FOLLOWER);
+		const myPk = config.user.pk;
 
-		follow = follow.map(item => ({
-			_id: `${item.from}:${item.to}`,
-			...item
+		follow = follow.map(({pk, timestamp}) => ({
+			_id: `${myPk}:${pk}`,
+			from: myPk,
+			to: pk,
+			timestamp: timestamp
 		}));
 
 		collection.insertMany(follow, (error) => {

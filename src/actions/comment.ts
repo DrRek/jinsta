@@ -6,7 +6,7 @@ export default async (media: any): boolean => {
 	const client = store.getState().client;
 	const config = store.getState().config;
 
-	let response: any = null;
+	let response: any = {};
 
 	try {
 		response = await client.media.comment({
