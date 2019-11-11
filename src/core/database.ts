@@ -1,5 +1,5 @@
 import logger from './logging';
-import store from './store'
+import store from './store';
 
 const MongoClient = require('mongodb').MongoClient;
 

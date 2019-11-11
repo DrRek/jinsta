@@ -1,11 +1,11 @@
-import store from "../core/store";
-import logger from "../core/logging";
-import { basicMediaInteraction, basicFollow } from "../features";
-import { random } from "../core/utils";
-import { HashtagFeed } from "../feeds";
-import { saveManyFollow } from "../core/database";
+import store from '../core/store';
+import logger from '../core/logging';
+import { basicMediaInteraction, basicFollow } from '../features';
+import { random } from '../core/utils';
+import { HashtagFeed } from '../feeds';
+import { saveManyFollow } from '../core/database';
 
-const NAMESPACE = 'HASHTAG FLOW'
+const NAMESPACE = 'HASHTAG FLOW';
 
 /**
 	Returns true if i've reached config limits.
@@ -37,7 +37,7 @@ export default async (): boolean => {
 	const randomTag = tagsToExplore[random(0, tagsToExplore.length)];
 	const hashtagFeed = new HashtagFeed(randomTag);
 
-	let followed = [];
+	const followed = [];
 
 	const basic = {
 		tot: random(
@@ -48,7 +48,7 @@ export default async (): boolean => {
 		),
 		current: 0,
 		successful: 0,
-		run: async () =>
+		run: async (): boolean =>
 			await basicMediaInteraction(
 				hashtagFeed,
 				config.basic_hashtag_interaction_comments_chance
@@ -62,7 +62,7 @@ export default async (): boolean => {
 		),
 		current: 0,
 		successful: null,
-		run: async () => {
+		run: async (): any => {
 			const res = await basicFollow(hashtagFeed);
 			res && followed.push(res);
 			return res;
@@ -82,7 +82,7 @@ export default async (): boolean => {
 		success && randomAction.successful++;
 	}
 
-	logger.info('end %o', followed)
+	logger.info('end %o', followed);
 	if(followed) saveManyFollow(followed);
 
 	store.setState({

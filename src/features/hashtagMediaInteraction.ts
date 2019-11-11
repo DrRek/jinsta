@@ -1,8 +1,6 @@
 import store from '../core/store';
 import logger from '../core/logging';
 import { basicMediaInteraction } from '../features';
-import { random } from '../core/utils';
-import { HashtagFeed } from '../feeds';
 
 /**
 	Returns true if i've reached config limits.

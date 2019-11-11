@@ -1,15 +1,15 @@
-import store from "../core/store";
-import { defaultMediaValidator } from "./utils";
-import { like, follow } from "../actions";
+import store from '../core/store';
+import { defaultMediaValidator } from './utils';
+import { like, follow } from '../actions';
 import {
 	boolFromProbability,
 	convertIDtoPost,
 	random,
 	sleep
-} from "../core/utils";
-import logger from "../core/logging";
-import { UserFeed } from "../feeds";
-import { storyView } from ".";
+} from '../core/utils';
+import logger from '../core/logging';
+import { UserFeed } from '../feeds';
+import { storyView } from '.';
 
 const isValidMedia = (media: any): boolean => defaultMediaValidator(media);
 
@@ -25,8 +25,8 @@ const isValidUser = ({
 feed: the object of the feed to take the next media from
 */
 const basicFollow = async (feed): any => {
-	const NAMESPACE = "BASIC FOLLOW";
-	const { config, client } = store.getState();
+	const NAMESPACE = 'BASIC FOLLOW';
+	const { client } = store.getState();
 
 	let media, user;
 	do {
@@ -42,15 +42,13 @@ const basicFollow = async (feed): any => {
 
 	const numberOfLikes = random(1, 3);
 	const targetUserFeed = new UserFeed(user.pk);
-	const userFeed = client.feed.user(user.pk);
 	let liked = 0, currentMedia;
 
-	//TODO JUMP SOME MEDIA TO LIKE
 	while (
 		(currentMedia = await targetUserFeed.nextMedia()) != null &&
 		liked < numberOfLikes
 	) {
-		if (await like(currentMedia)) {
+		if ( boolFromProbability(0.3) && await like(currentMedia)) {
 			logger.info(
 				`[${NAMESPACE}] %i/%i post (%s) liked for user https://www.instagram.com/%s`,
 				liked,
