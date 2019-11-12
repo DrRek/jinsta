@@ -1,9 +1,13 @@
 import bigInt from 'big-integer';
 
+// returns a random number between (lowerBound, upperBound). upperBound is not included
+const random = (lowerBound: number, upperBound: number): number =>
+	lowerBound + Math.floor(Math.random()*(upperBound - lowerBound));
+
 /**
 	Sleep for `seconds` number of seconds
 */
-const sleep = (seconds: number): Promise<void> => new Promise(resolve => setTimeout(resolve, Math.floor(seconds * 1000)));
+const sleep = (seconds: number): Promise<void> => new Promise(resolve => setTimeout(resolve, Math.floor(seconds * 1000) + random(0,1000)));
 const chance = (percentage: number): boolean => Math.random() < percentage;
 
 function convertIDtoPost(mediaID: string): string {
@@ -22,10 +26,6 @@ function convertIDtoPost(mediaID: string): string {
 
 const convertUserToUrl = (username: string): string  =>
 	`https://instagram.com/${username}/`;
-
-// returns a random number between (lowerBound, upperBound). upperBound is not included
-const random = (lowerBound: number, upperBound: number): number =>
-	lowerBound + Math.floor(Math.random()*(upperBound - lowerBound));
 
 // returns true with a certain probability provided as input
 const boolFromProbability = (probability: number): number =>

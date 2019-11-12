@@ -1,13 +1,13 @@
-import logger from './logging';
-import store from './store';
+import logger from "./logging";
+import store from "./store";
 
-const MongoClient = require('mongodb').MongoClient;
+const MongoClient = require("mongodb").MongoClient;
 
-require('dotenv').config();
+require("dotenv").config();
 
 const { MONGODB_URL, MONGODB_DATABASE } = process.env;
-const NAMESPACE = 'DATABASE';
-const COLLECTION_FOLLOWER = 'follow';
+const NAMESPACE = "DATABASE";
+const COLLECTION_FOLLOWER = "follow";
 
 const connect = (callback): void => {
 	MongoClient.connect(
@@ -15,7 +15,10 @@ const connect = (callback): void => {
 		{ useNewUrlParser: true, useUnifiedTopology: true },
 		(error, client) => {
 			if (error) {
-				logger.error(`[${NAMESPACE} error while connecting - %o]`, error);
+				logger.error(
+					`[${NAMESPACE} error while connecting - %o]`,
+					error
+				);
 				throw error;
 			}
 			callback(client);
@@ -25,22 +28,35 @@ const connect = (callback): void => {
 
 const saveManyFollow = (follow): void => {
 	connect(client => {
-		logger.error('DATABASE HAS BEEN CALLED %o', follow);
+		logger.warn("DATABASE HAS BEEN CALLED %o", follow);
 		const { config } = store.getState();
 		const database = client.db(MONGODB_DATABASE);
 		const collection = database.collection(COLLECTION_FOLLOWER);
 		const myPk = config.user.pk;
 
-		follow = follow.map(({pk, timestamp}) => ({
-			_id: `${myPk}:${pk}`,
-			from: myPk,
-			to: pk,
-			timestamp: timestamp
-		}));
+		//just a further check to avoid having duplicates in the array
+		const filteredFollow = [];
+		follow.map(({ pk, timestamp }) => {
+			if (!filteredFollow.find(({ to }) => pk === to))
+				filteredFollow.push({
+					_id: `${myPk}:${pk}`,
+					from: myPk,
+					to: pk,
+					timestamp: timestamp
+				});
+			else
+				logger.warn(
+					`[${NAMESPACE}] Duplicates where stripped from follow to save %o`,
+					follow
+				);
+		});
 
-		collection.insertMany(follow, (error) => {
+		collection.insertMany(filteredFollow, error => {
 			if (error) {
-				logger.error(`[${NAMESPACE} error while inserting - %o]`, error);
+				logger.error(
+					`[${NAMESPACE} error while inserting - %o]`,
+					error
+				);
 				throw error;
 			}
 
@@ -60,7 +76,7 @@ const deleteManyFollow = (unfollow): void => {
 			}
 		};
 
-		collection.deleteMany(idsToRemove, (error) => {
+		collection.deleteMany(idsToRemove, error => {
 			if (error) {
 				logger.error(`[${NAMESPACE} error while deleting - %o]`, error);
 				client.close();

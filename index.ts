@@ -8,7 +8,7 @@ import { random } from "./src/core/utils";
 import logger from "./src/core/logging";
 import store from "./src/core/store";
 import { timeline, hashtag } from "./src/flows";
-import { storyMassView } from "./src/features";
+import { storyMassView, simulateUserInteraction } from "./src/features";
 import { follow, unfollow } from './src/actions'
 
 require("dotenv").config();
@@ -26,35 +26,40 @@ async function main(): Promise<void> {
 		"Sembra davvero buona! 😋 😍  🍕",
 		"Continua così!! 👏 👏  🍕",
 		"Calda calda è ancora più buona! 😍 😋 🍕",
-		"La pizza è sempre speciale! 😍 😋 🍕",
+		"Speciale! 😍 😋 🍕",
 		"Che capolavoro! 😍 👏 🍕",
 		"È davvero uno spettacolo! 😍 👏 🍕",
 		"Buonissima! 👏 👏 🍕",
 		"Come se ne può fare a meno?! 😋 😋 🍕",
 		"Strepitosa! 😍 😋 🍕",
-		"Ma è buonissima! 😍 😋 🍕",
+		"Ma è bellissima! 😍 😋 🍕",
 		"La mangerei tutti giorni! 😋 🍕",
 		"Posso averne una fetta? 😍 😋 🍕",
 		"Ok, devo assaggiarla! 😍 😋 🍕"
 	];
 
-	config.basic_timeline_interaction_limit = 0;
-	config.basic_timeline_interaction_comments_chance = 0;
-
-	config.basic_hashtag_interaction_limit = 0;
-	config.basic_hashtag_interaction_comments_chance = 0;
 	config.tags = [
-		"pizza",
-		"pizzaitaliana",
+		"pizzacapricciosa",
+		"pizzapizza",
 		"pizzanapoletana",
-		"pizzanapoli",
-		"pizzamargherita"
+		"pizzaanapoli",
+		"pizzamargherita",
+		"pizzagourmet",
+		"pizzatime",
+		"pizzalover",
+		"pizzafritta"
 	];
 
-	config.story_mass_view_enabled = false;
+	config.basic_timeline_interaction_limit = 10;
+	config.basic_timeline_interaction_comments_chance = 0;
+	config.follow_by_timeline = 5;
 
-	config.follow_by_hashtag = 0;
-	config.follow_by_timeline = 1;
+	config.basic_hashtag_interaction_limit = 10;
+	config.basic_hashtag_interaction_comments_chance = 0.20;
+	config.follow_by_hashtag = 5;
+
+	config.story_mass_view_enabled = true;
+
 
 	await setup(config);
 
@@ -69,41 +74,51 @@ async function main(): Promise<void> {
 		//choose a random action
 		const currentAction = actions[random(0, actions.length)];
 
-		switch (currentAction) {
-			//Interactions picker for timeline feed
-			case "timeline":
-				logger.info("[MAIN CONTROLLER] Starting timeline feature");
-				stillToDo = await timeline(
-					timelineFeed,
-					random(1, Math.min(10, config.basic_timeline_interaction_limit))
-				);
+		try {
+			switch (currentAction) {
+				//Interactions picker for timeline feed
+				case "timeline":
+					logger.info("[MAIN CONTROLLER] Starting timeline feature");
+					stillToDo = await timeline(
+						timelineFeed,
+						random(1, Math.min(10, config.basic_timeline_interaction_limit))
+					);
 
-				if (!stillToDo) actions = actions.filter(e => e !== "timeline");
+					if (!stillToDo) actions = actions.filter(e => e !== "timeline");
 
-				break;
+					break;
 
-			//Interactions picker for hashtag feeds
-			case "hashtag":
-				logger.info("[MAIN CONTROLLER] Starting hashtag feature");
-				stillToDo = await hashtag();
+				//Interactions picker for hashtag feeds
+				case "hashtag":
+					logger.info("[MAIN CONTROLLER] Starting hashtag feature");
+					stillToDo = await hashtag();
 
-				if (!stillToDo) actions = actions.filter(e => e !== "hashtag");
+					if (!stillToDo) actions = actions.filter(e => e !== "hashtag");
 
-				break;
+					break;
 
-			case "storymassview":
-				logger.info("[MAIN CONTROLLER] Starting story massview");
-				await storyMassView();
-				actions = actions.filter(e => e !== "storymassview");
-				break;
+				case "storymassview":
+					logger.info("[MAIN CONTROLLER] Starting story massview");
+					await storyMassView();
+					actions = actions.filter(e => e !== "storymassview");
+					break;
 
-			default:
-				logger.error(
-					"[MAIN CONTROLLER] Erorr: unknown action - %s",
-					currentAction
-				);
-				break;
+				default:
+					logger.error(
+						"[MAIN CONTROLLER] Erorr: unknown action - %s",
+						currentAction
+					);
+					break;
+			}
+		} catch (error) {
+			if(error && error.message && error.message.includes('feedback_required')){
+				logger.warn(`[CONTROLLER] Instagram has blocked certain features, fallback procedure to avoid further detection.`);
+				await simulateUserInteraction();
+				logger.warn(`[CONTROLLER] Fallback procedure has been completed, trying to resume tasks from config.`);
+			}
 		}
+
+		
 	}
 	logger.info("[MAIN CONTROLLER] No actions left to do, terminating");
 }

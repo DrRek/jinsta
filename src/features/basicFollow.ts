@@ -16,7 +16,7 @@ feed: the object of the feed to take the next media from
 const basicFollow = async (user: any): any => {
 	const NAMESPACE = 'BASIC FOLLOW';
 
-	storyView(user.pk);
+	storyView([user.pk]);
 
 	const numberOfLikes = random(1, 3);
 	const targetUserFeed = new UserFeed(user.pk);
