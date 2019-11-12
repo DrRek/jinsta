@@ -1,10 +1,10 @@
-import store from "../core/store";
-import logger from "../core/logging";
-import { basicMediaInteraction, timelineFollow } from "../features";
-import { random } from "../core/utils";
-import { saveManyFollow } from "../core/database";
+import store from '../core/store';
+import logger from '../core/logging';
+import { basicMediaInteraction, timelineFollow } from '../features';
+import { random } from '../core/utils';
+import { saveManyFollow } from '../core/database';
 
-const NAMESPACE = "TIMELINE FLOW";
+const NAMESPACE = 'TIMELINE FLOW';
 
 /**
 	Returns true if i've reached config limits.
@@ -49,7 +49,7 @@ export default async (timelineFeed, interactions: number): boolean => {
 			const res = await basicMediaInteraction(
 				timelineFeed,
 				config.basic_timeline_interaction_comments_chance
-			)
+			);
 			
 			return res;
 		}

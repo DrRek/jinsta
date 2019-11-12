@@ -25,7 +25,7 @@ const connect = (callback): void => {
 
 const saveManyFollow = (follow): void => {
 	connect(client => {
-		logger.error('DATABASE HAS BEEN CALLED %o', follow)
+		logger.error('DATABASE HAS BEEN CALLED %o', follow);
 		const { config } = store.getState();
 		const database = client.db(MONGODB_DATABASE);
 		const collection = database.collection(COLLECTION_FOLLOWER);

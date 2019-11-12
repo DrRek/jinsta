@@ -21,7 +21,7 @@ function convertIDtoPost(mediaID: string): string {
 }
 
 const convertUserToUrl = (username: string): string  =>
-	`https://instagram.com/${username}/`
+	`https://instagram.com/${username}/`;
 
 // returns a random number between (lowerBound, upperBound). upperBound is not included
 const random = (lowerBound: number, upperBound: number): number =>

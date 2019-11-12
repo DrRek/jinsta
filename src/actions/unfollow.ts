@@ -3,7 +3,7 @@ import logger from '../core/logging';
 
 export default async (): boolean => {
 	const NAMESPACE = 'FOLLOW';
-	const { config, client } = store.getState();
+	const { client } = store.getState();
 	const userId = (await client.user.searchExact('cpmax8')).pk;
 	const { following } = await client.friendship.destroy(userId);
 

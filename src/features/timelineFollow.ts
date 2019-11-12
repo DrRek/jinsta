@@ -5,7 +5,7 @@ import basicFollow from './basicFollow';
 import { UserFeed, CommentsFeed } from '../feeds';
 import logger from '../core/logging';
 
-const NAMESPACE = 'TIMELINE FLOW'
+const NAMESPACE = 'TIMELINE FLOW';
 
 const isValidMedia = (media: any): boolean => defaultMediaValidator(media);
 
@@ -50,12 +50,12 @@ const timelineFollow = async (feed): any => {
 			await sleep(random(1, 3) / 10); //TODO DA SISTEMAREEEEEEEEEEEEEEEEEEEE A 10
 			comment = await commentFeed.nextMedia();
 			//logger.info(`[${NAMESPACE}] tesgtin comment %o`, comment);
-		} while(comment && comment.child_comment_count < 1)
+		} while(comment && comment.child_comment_count < 1);
 
 	} while (!comment);
 
-	let friendUser = await client.user.info(comment.user.pk);
-	return await basicFollow(user);
+	const friendUser = await client.user.info(comment.user.pk);
+	return await basicFollow(friendUser);
 };
 
 export default timelineFollow;

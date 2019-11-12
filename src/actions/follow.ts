@@ -3,7 +3,7 @@ import logger from '../core/logging';
 
 export default async (pk: number): boolean => {
 	const NAMESPACE = 'FOLLOW';
-	const { config, client } = store.getState();
+	const { client } = store.getState();
 	const { following } = await client.friendship.create(pk);
 	
 	if(!following){

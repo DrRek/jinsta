@@ -1,11 +1,11 @@
-import store from "../core/store";
-import logger from "../core/logging";
-import { basicMediaInteraction, hashtagFollow } from "../features";
-import { random } from "../core/utils";
-import { HashtagFeed } from "../feeds";
-import { saveManyFollow } from "../core/database";
+import store from '../core/store';
+import logger from '../core/logging';
+import { basicMediaInteraction, hashtagFollow } from '../features';
+import { random } from '../core/utils';
+import { HashtagFeed } from '../feeds';
+import { saveManyFollow } from '../core/database';
 
-const NAMESPACE = "HASHTAG FLOW";
+const NAMESPACE = 'HASHTAG FLOW';
 
 /**
 	Returns true if i've reached config limits.
