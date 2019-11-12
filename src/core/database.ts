@@ -1,13 +1,13 @@
-import logger from "./logging";
-import store from "./store";
+import logger from './logging';
+import store from './store';
 
-const MongoClient = require("mongodb").MongoClient;
+const MongoClient = require('mongodb').MongoClient;
 
-require("dotenv").config();
+require('dotenv').config();
 
 const { MONGODB_URL, MONGODB_DATABASE } = process.env;
-const NAMESPACE = "DATABASE";
-const COLLECTION_FOLLOWER = "follow";
+const NAMESPACE = 'DATABASE';
+const COLLECTION_FOLLOWER = 'follow';
 
 const connect = (callback): void => {
 	MongoClient.connect(
@@ -28,7 +28,7 @@ const connect = (callback): void => {
 
 const saveManyFollow = (follow): void => {
 	connect(client => {
-		logger.warn("DATABASE HAS BEEN CALLED %o", follow);
+		logger.warn('DATABASE HAS BEEN CALLED %o', follow);
 		const { config } = store.getState();
 		const database = client.db(MONGODB_DATABASE);
 		const collection = database.collection(COLLECTION_FOLLOWER);

@@ -1,10 +1,10 @@
-import store from "../core/store";
-import { storyMassView, storyView } from "./story";
-import { TimelineFeed, UserFeed, CommentsFeed } from "../feeds";
-import { random, sleep } from "../core/utils";
-import logger from "../core/logging";
+import store from '../core/store';
+import { storyMassView, storyView } from './story';
+import { TimelineFeed, UserFeed, CommentsFeed } from '../feeds';
+import { random, sleep } from '../core/utils';
+import logger from '../core/logging';
 
-const NAMESPACE = "SIMULATE USER INTERACTION";
+const NAMESPACE = 'SIMULATE USER INTERACTION';
 
 const pickMedia = async (feed: any): any => {
 	let media = null;
@@ -35,8 +35,8 @@ const randomFeedFromMedia = async (media: any): any => {
 	return comment && new UserFeed(comment.user.pk);
 };
 
-const randomFeed = async (feeds, medias, users) => {
-	let sourceIndex = random(0, 3);
+const randomFeed = async (feeds, medias, users): any => {
+	const sourceIndex = random(0, 3);
 
 	if (sourceIndex === 0) {
 		if (feeds && feeds.length > 0) {
@@ -61,7 +61,7 @@ const randomFeed = async (feeds, medias, users) => {
 };
 
 export default async () => {
-	const { config, client } = store.getState();
+	const { client } = store.getState();
 
 	await storyMassView();
 
