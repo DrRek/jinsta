@@ -20,6 +20,9 @@ function convertIDtoPost(mediaID: string): string {
 	return 'https://instagram.com/p/' + shortcode;
 }
 
+const convertUserToUrl = (username: string): string  =>
+	`https://instagram.com/${username}/`
+
 // returns a random number between (lowerBound, upperBound). upperBound is not included
 const random = (lowerBound: number, upperBound: number): number =>
 	lowerBound + Math.floor(Math.random()*(upperBound - lowerBound));
@@ -35,4 +38,5 @@ export {
 	convertIDtoPost,
 	random,
 	boolFromProbability,
+	convertUserToUrl
 };

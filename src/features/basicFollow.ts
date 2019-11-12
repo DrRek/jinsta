@@ -1,9 +1,8 @@
-import store from '../core/store';
-import { defaultMediaValidator } from './utils';
 import { like, follow } from '../actions';
 import {
 	boolFromProbability,
 	convertIDtoPost,
+	convertUserToUrl,
 	random,
 	sleep
 } from '../core/utils';
@@ -11,60 +10,41 @@ import logger from '../core/logging';
 import { UserFeed } from '../feeds';
 import { storyView } from '.';
 
-const isValidMedia = (media: any): boolean => defaultMediaValidator(media);
-
-const isValidUser = ({
-	profile_pic_id,
-	following_count,
-	follower_count
-}: any): boolean => {
-	return profile_pic_id && follower_count > 20 && following_count < 1000;
-};
-
 /**
 feed: the object of the feed to take the next media from
 */
-const basicFollow = async (feed): any => {
+const basicFollow = async (user: any): any => {
 	const NAMESPACE = 'BASIC FOLLOW';
-	const { client } = store.getState();
-
-	let media, user;
-	do {
-		media = await feed.nextMedia();
-		const targetUserPk = media.user.pk;
-		user = await client.user.info(targetUserPk);
-
-		//sleep for 1 to 3 tenths of seconds
-		await sleep(random(1, 3) / 1); //TODO DA SISTEMAREEEEEEEEEEEEEEEEEEEE A 10
-	} while (!isValidMedia(media) || !isValidUser(user));
 
 	storyView(user.pk);
 
 	const numberOfLikes = random(1, 3);
 	const targetUserFeed = new UserFeed(user.pk);
-	let liked = 0, currentMedia;
+	let liked = 0, userFeedMedia;
 
 	while (
-		(currentMedia = await targetUserFeed.nextMedia()) != null &&
+		(userFeedMedia = await targetUserFeed.nextMedia()) != null &&
 		liked < numberOfLikes
 	) {
-		if ( boolFromProbability(0.3) && await like(currentMedia)) {
+		if ( boolFromProbability(0.3) && await like(userFeedMedia)) {
+			liked++;
 			logger.info(
-				`[${NAMESPACE}] %i/%i post (%s) liked for user https://www.instagram.com/%s`,
+				`[${NAMESPACE}] %i/%i post ( %s ) liked for user %s %s`,
 				liked,
 				numberOfLikes,
-				convertIDtoPost(media.id),
-				user.username
+				convertIDtoPost(userFeedMedia.id),
+				convertUserToUrl(user.username),
+				user.pk
 			);
-			liked++;
 		}
 		await sleep(random(1, 3));
 	}
 
 	if (liked < numberOfLikes) {
 		logger.warn(
-			`[${NAMESPACE}] unable to properly interact with user https://www.instagram.com/%s/, will not follow.`,
-			user.username
+			`[${NAMESPACE}] unable to properly interact with user %s %s, will not follow.`,
+			convertUserToUrl(user.username),
+			user.pk
 		);
 		return null;
 	}
@@ -72,14 +52,16 @@ const basicFollow = async (feed): any => {
 	await sleep(random(3, 5));
 	if (follow(user.pk)) {
 		logger.info(
-			`[${NAMESPACE}] followed: https://www.instagram.com/%s/.`,
-			user.username
+			`[${NAMESPACE}] followed: %s %s.`,
+			convertUserToUrl(user.username),
+			user.pk
 		);
 		return { pk: user.pk, timestamp: new Date() };
 	} else {
 		logger.warn(
-			`[${NAMESPACE}] unable to follow user: https://www.instagram.com/%s/`,
-			user.username
+			`[${NAMESPACE}] unable to follow user: %s %s`,
+			convertUserToUrl(user.username),
+			user.pk
 		);
 		return null;
 	}

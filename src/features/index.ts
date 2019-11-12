@@ -1,6 +1,7 @@
 import basicMediaInteraction from './basicMediaInteraction';
 import hashtagMediaInteraction from './basicMediaInteraction';
-import basicFollow from './basicFollow';
+import hashtagFollow from './hashtagFollow';
+import timelineFollow from './timelineFollow';
 import { storyMassView, storyView } from './story';
 
 export {
@@ -8,5 +9,6 @@ export {
 	hashtagMediaInteraction,
 	storyMassView,
 	storyView,
-	basicFollow
+	hashtagFollow,
+	timelineFollow
 };

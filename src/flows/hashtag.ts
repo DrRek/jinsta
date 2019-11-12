@@ -1,21 +1,24 @@
-import store from '../core/store';
-import logger from '../core/logging';
-import { basicMediaInteraction, basicFollow } from '../features';
-import { random } from '../core/utils';
-import { HashtagFeed } from '../feeds';
-import { saveManyFollow } from '../core/database';
+import store from "../core/store";
+import logger from "../core/logging";
+import { basicMediaInteraction, hashtagFollow } from "../features";
+import { random } from "../core/utils";
+import { HashtagFeed } from "../feeds";
+import { saveManyFollow } from "../core/database";
 
-const NAMESPACE = 'HASHTAG FLOW';
+const NAMESPACE = "HASHTAG FLOW";
 
 /**
 	Returns true if i've reached config limits.
 */
 const checkLimits = (): boolean => {
-	const { config, tagsToExplore } = store.getState();
+	const {
+		config: { tags },
+		tagsToExplore
+	} = store.getState();
 
-	if (config.tags.length > 0) {
+	if (tags.length > 0) {
 		if (tagsToExplore === undefined) {
-			store.setState({ tagsToExplore: config.tags });
+			store.setState({ tagsToExplore: tags });
 			return false;
 		} else if (tagsToExplore.length > 0) {
 			return false;
@@ -26,7 +29,7 @@ const checkLimits = (): boolean => {
 };
 
 /**
-	Manage hastag flow of actions.
+	Manage hashtag flow of actions.
 	Param `interactions`: number of actions to perform
 	Returns true if no config limit has been reached.
 */
@@ -42,9 +45,7 @@ export default async (): boolean => {
 	const basic = {
 		tot: random(
 			1,
-			Math.ceil(
-				config.basic_hashtag_interaction_limit / tagsToExplore.length
-			)
+			Math.ceil(config.basic_hashtag_interaction_limit / tagsToExplore.length)
 		),
 		current: 0,
 		successful: 0,
@@ -56,14 +57,11 @@ export default async (): boolean => {
 	};
 
 	const follow = {
-		tot: random(
-			1,
-			Math.ceil(config.follow_by_hashtag / tagsToExplore.length)
-		),
+		tot: random(1, Math.ceil(config.follow_by_hashtag / tagsToExplore.length)),
 		current: 0,
 		successful: null,
 		run: async (): any => {
-			const res = await basicFollow(hashtagFeed);
+			const res = await hashtagFollow(hashtagFeed);
 			res && followed.push(res);
 			return res;
 		}
@@ -75,15 +73,13 @@ export default async (): boolean => {
 		const availableActions = actions.filter(
 			({ tot, current }) => current < tot
 		);
-		const randomAction =
-			availableActions[random(0, availableActions.length)];
+		const randomAction = availableActions[random(0, availableActions.length)];
 		const success = await randomAction.run();
 		randomAction.current++;
 		success && randomAction.successful++;
 	}
 
-	logger.info('end %o', followed);
-	if(followed) saveManyFollow(followed);
+	if (followed && followed.length > 0) saveManyFollow(followed);
 
 	store.setState({
 		tagsToExplore: tagsToExplore.filter(e => e !== randomTag)

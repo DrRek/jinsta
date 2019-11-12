@@ -1,6 +1,5 @@
 import store from '../core/store';
 import logger from '../core/logging';
-import { saveManyFollow } from '../core/database';
 
 export default async (pk: number): boolean => {
 	const NAMESPACE = 'FOLLOW';
@@ -11,12 +10,6 @@ export default async (pk: number): boolean => {
 		logger.warn(`[${NAMESPACE} unable to follow user %o]`, pk);
 		return false;
 	}
-
-	saveManyFollow([{
-		from: config.user.pk,
-		to: pk,
-		timestamp: new Date()
-	}]);
 
 	return true;
 };

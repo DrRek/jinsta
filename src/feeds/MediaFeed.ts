@@ -1,7 +1,10 @@
 import { sleep, random } from '../core/utils';
+import logger from '../core/logging';
+
 export default class MediaFeed {
 	private feed: any;
 	private items: any[];
+	private isMoreAvailable: boolean;
 
 	constructor(feed) {
 		if (new.target === MediaFeed) {
@@ -11,13 +14,15 @@ export default class MediaFeed {
 		}
 		this.feed = feed;
 		this.items = [];
+		this.isMoreAvailable = true;
 	}
 
 	public nextMedia = async (): any => {
-		if (this.items.length === 0) {
+		if (this.items.length === 0 && this.isMoreAvailable) {
 			//sleep for 1 to 3 tenths of seconds
 			await sleep(random(1, 3) / 10);
 			this.items = await this.feed.items();
+			this.isMoreAvailable = this.feed.isMoreAvailable()
 		}
 
 		return this.items.shift();

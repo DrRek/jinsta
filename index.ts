@@ -39,6 +39,7 @@ async function main(): Promise<void> {
 	];
 
 	config.basic_timeline_interaction_limit = 0;
+	config.basic_timeline_interaction_comments_chance = 0;
 
 	config.basic_hashtag_interaction_limit = 0;
 	config.basic_hashtag_interaction_comments_chance = 0;
@@ -52,7 +53,8 @@ async function main(): Promise<void> {
 
 	config.story_mass_view_enabled = false;
 
-	config.follow_by_hashtag = 1;
+	config.follow_by_hashtag = 0;
+	config.follow_by_timeline = 1;
 
 	await setup(config);
 
