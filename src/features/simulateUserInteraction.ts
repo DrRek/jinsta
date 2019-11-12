@@ -60,7 +60,7 @@ const randomFeed = async (feeds, medias, users): any => {
 	return null;
 };
 
-export default async () => {
+export default async (): void => {
 	const { client } = store.getState();
 
 	await storyMassView();
